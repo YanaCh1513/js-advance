@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <div class="backet">
+        <div class="backet-item"> title: Card__1, price: 33</div>
+        <div class="backet-item"> title: Card__1, price: 33</div>
+    </div> -->
+
+    <div class="content"></div>
+
+    <script>
+
+        const products = [
+            { id: 1, title: "one", price: 40, img: "./resources/product1.png" },
+            { id: 2, title: "two", price: 3, img: "./resources/product2.png" },
+            { id: 2, title: "three", price: 3, img: "./resources/product1.png" }
+        ];
+
+        renderPage(products);
+
+        function getItemHtml(item) {
+            return `
+                <div class="card" data-title="${item.title}" data-price="${item.price}">
+                    <img src="${item.img}" alt="picture">
+                    <h3>${item.title}</h3>
+                    <p>$${item.price}</p>
+                    <button>Buy</button>
+                </div>`;
+        }
+
+        function renderPage(items) {
+            const itemsConteiner = document.querySelector('.content');
+            itemsConteiner.innerHTML = "";
+
+            for (let i = 0; i < items.length; i++) {
+                let itemHtml = getItemHtml(items[i]);
+                itemsConteiner.insertAdjacentHTML('beforeend', itemHtml);
+            }
+        }
+
+
+        // function addBucketElement(title, price) {
+        //     const backetElement = document.querySelector(".backet");
+        //     const itemHtml = `
+        //         <div class="backet-item"> title: ${title}, price: $${price}</div>
+        //     `;
+        //     backetElement.insertAdjacentHTML("beforeend", itemHtml);
+        // }
+
+        // function clickOnCard(card) {
+        //     const title = card.dataset.title;
+        //     const price = card.dataset.price;
+        //     addBucketElement(title, price);
+        // }
+
+        // function addEvents() {
+        //     let cardElements = document.querySelectorAll(".card");
+        //     cardElements.forEach(x => { x.addEventListener('click', function (event) { clickOnCard(event.srcElement); }) });
+        // }
+
+
+//        addEvents();
+        // window.onload = function () {
+        //     addEvents();
+
+        // }
+    </script>
+
+
+    <style>
+        .content {
+            display: flex;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .backet {
+            display: flex;
+            background-color: blanchedalmond;
+            border-style: dotted;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .backet-item {
+            background-color: azure;
+            border-style: dotted;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            /* height: 200px; */
+            background-color: rgb(129, 181, 181);
+            cursor: pointer;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .card button {
+            width: 100%;
+            height: 40px;
+        }
+
+        img {
+            /* border: solid; */
+            border-radius: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+        }
+    </style>
+</body>
+
+</html>
