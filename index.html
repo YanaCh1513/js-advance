@@ -17,63 +17,115 @@
     <div class="content"></div>
 
     <script>
+        // ProductList
+        // - container
+        // - products = []
+        // - render() { products -> product.getHtml() -> this.container.insertAdjasmentHtml() }
+        // Product
+        // - id
+        // - title
+        // - price
+        // - img
+        // - getHtml();
+        // Backet
+        // - backetConteiner
+        // - backetItems = [];
+        // - render()
+        // - add(backetItem){ backetItems.push(backetItem); }
+        // - total(); -> sum of backetItems
+        // BacketItem
+        // - name
+        // - price
+        // Add product to backet
+        // 1. onClick => productElement
+        // 2. let backetItem <= productElement 
+        // 3. backet.add(backetItem)
 
-        const products = [
-            { id: 1, title: "one", price: 40, img: "./resources/product1.png" },
-            { id: 2, title: "two", price: 3, img: "./resources/product2.png" },
-            { id: 2, title: "three", price: 3, img: "./resources/product1.png" }
-        ];
+        class BacketItem {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            }
 
-        renderPage(products);
-
-        function getItemHtml(item) {
-            return `
-                <div class="card" data-title="${item.title}" data-price="${item.price}">
-                    <img src="${item.img}" alt="picture">
-                    <h3>${item.title}</h3>
-                    <p>$${item.price}</p>
-                    <button>Buy</button>
-                </div>`;
-        }
-
-        function renderPage(items) {
-            const itemsConteiner = document.querySelector('.content');
-            itemsConteiner.innerHTML = "";
-
-            for (let i = 0; i < items.length; i++) {
-                let itemHtml = getItemHtml(items[i]);
-                itemsConteiner.insertAdjacentHTML('beforeend', itemHtml);
+            getHtml() {
+                /** get HTML **/
             }
         }
 
+        class Backet {
+            constructor(backetItems, backetConteiner) {
+                this.items = backetItems;
+                this.conteiner = backetConteiner;
+            }
+            render() {
+                this.conteiner.innerHTML = "";
 
-        // function addBucketElement(title, price) {
-        //     const backetElement = document.querySelector(".backet");
-        //     const itemHtml = `
-        //         <div class="backet-item"> title: ${title}, price: $${price}</div>
-        //     `;
-        //     backetElement.insertAdjacentHTML("beforeend", itemHtml);
-        // }
+                for (let item of this.items) {
+                    this.conteiner.insertAdjacentHTML('beforeend', item.getHtml());
+                }
+            }
+            add(item) {
+                items.push(backetItem);
+            }
+            total() {
+                let total = 0;
+                for (let item of this.items) {
+                    total += item.price;
+                }
+                return total;
+            };
+        }
 
-        // function clickOnCard(card) {
-        //     const title = card.dataset.title;
-        //     const price = card.dataset.price;
-        //     addBucketElement(title, price);
-        // }
+        class ProductList {
+            constructor(products, itemsConteiner) {
+                this.products = products;
+                this.itemsConteiner = itemsConteiner;
+            }
 
-        // function addEvents() {
-        //     let cardElements = document.querySelectorAll(".card");
-        //     cardElements.forEach(x => { x.addEventListener('click', function (event) { clickOnCard(event.srcElement); }) });
-        // }
+            render() {
+                this.itemsConteiner.innerHTML = "";
 
+                for (let product of this.products) {
+                    this.itemsConteiner.insertAdjacentHTML('beforeend', product.getHtml());
+                }
+            }
+        }
 
-//        addEvents();
-        // window.onload = function () {
-        //     addEvents();
+        class Product {
+            constructor(id, title, prise, img) {
+                this.id = id;
+                this.title = title;
+                this.price = prise;
+                this.img = img;
+            }
 
-        // }
+            getHtml() {
+                return `
+                <div class="card" data-id=${this.id} data-title="${this.title}" data-price="${this.price}">
+                    <img src="${this.img}" alt="picture">
+                    <h3>${this.title}</h3>
+                    <p>$${this.price}</p>
+                    <button>Buy</button>
+                </div>`;
+            }
+        }
+
+        const products = [
+            new Product(4, "four", 45, "./resources/product2.png"),
+            new Product(5, "five", 45, "./resources/product1.png"),
+            new Product(6, "six", 45, "./resources/product2.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+        ];
+
+        const productConteiner = document.querySelector('.content');
+        let productList = new ProductList(products, productConteiner);
+        productList.render();
+
     </script>
-
 
     <style>
         .content {
