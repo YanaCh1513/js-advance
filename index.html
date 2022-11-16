@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- <div class="backet">
+        <div class="backet-item"> title: Card__1, price: 33</div>
+        <div class="backet-item"> title: Card__1, price: 33</div>
+    </div> -->
+
+    <div class="content"></div>
+
+    <script>
+        // ProductList
+        // - container
+        // - products = []
+        // - render() { products -> product.getHtml() -> this.container.insertAdjasmentHtml() }
+        // Product
+        // - id
+        // - title
+        // - price
+        // - img
+        // - getHtml();
+        // Backet
+        // - backetConteiner
+        // - backetItems = [];
+        // - render()
+        // - add(backetItem){ backetItems.push(backetItem); }
+        // - total(); -> sum of backetItems
+        // BacketItem
+        // - name
+        // - price
+        // Add product to backet
+        // 1. onClick => productElement
+        // 2. let backetItem <= productElement 
+        // 3. backet.add(backetItem)
+
+        class BacketItem {
+            constructor(name, price) {
+                this.name = name;
+                this.price = price;
+            }
+
+            getHtml() {
+                /** get HTML **/
+            }
+        }
+
+        class Backet {
+            constructor(backetItems, backetConteiner) {
+                this.items = backetItems;
+                this.conteiner = backetConteiner;
+            }
+            render() {
+                this.conteiner.innerHTML = "";
+
+                for (let item of this.items) {
+                    this.conteiner.insertAdjacentHTML('beforeend', item.getHtml());
+                }
+            }
+            add(item) {
+                items.push(backetItem);
+            }
+            total() {
+                let total = 0;
+                for (let item of this.items) {
+                    total += item.price;
+                }
+                return total;
+            };
+        }
+
+        class ProductList {
+            constructor(products, itemsConteiner) {
+                this.products = products;
+                this.itemsConteiner = itemsConteiner;
+            }
+
+            render() {
+                this.itemsConteiner.innerHTML = "";
+
+                for (let product of this.products) {
+                    this.itemsConteiner.insertAdjacentHTML('beforeend', product.getHtml());
+                }
+            }
+        }
+
+        class Product {
+            constructor(id, title, prise, img) {
+                this.id = id;
+                this.title = title;
+                this.price = prise;
+                this.img = img;
+            }
+
+            getHtml() {
+                return `
+                <div class="card" data-id=${this.id} data-title="${this.title}" data-price="${this.price}">
+                    <img src="${this.img}" alt="picture">
+                    <h3>${this.title}</h3>
+                    <p>$${this.price}</p>
+                    <button>Buy</button>
+                </div>`;
+            }
+        }
+
+        const products = [
+            new Product(4, "four", 45, "./resources/product2.png"),
+            new Product(5, "five", 45, "./resources/product1.png"),
+            new Product(6, "six", 45, "./resources/product2.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+            new Product(8, "seven", 45, "./resources/product1.png"),
+        ];
+
+        const productConteiner = document.querySelector('.content');
+        let productList = new ProductList(products, productConteiner);
+        productList.render();
+
+    </script>
+
+    <style>
+        .content {
+            display: flex;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .backet {
+            display: flex;
+            background-color: blanchedalmond;
+            border-style: dotted;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .backet-item {
+            background-color: azure;
+            border-style: dotted;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            /* height: 200px; */
+            background-color: rgb(129, 181, 181);
+            cursor: pointer;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .card button {
+            width: 100%;
+            height: 40px;
+        }
+
+        img {
+            /* border: solid; */
+            border-radius: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+        }
+    </style>
+</body>
+
+</html>
