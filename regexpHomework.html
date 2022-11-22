@@ -13,6 +13,8 @@
     <button class="originButton">Вернуть исходный текст</button>
     <button class="task1Button">Заменить все кавычки</button>
     <button class="task2Button">Заменить только апострафы</button>
+    <button class="task3Button">Заменить кроме апострафов</button>
+
     <style>
         button {
             width: 200px;
@@ -28,9 +30,11 @@
         let buttonOrigin = document.querySelector('.originButton');
         let button1 = document.querySelector('.task1Button');
         let button2 = document.querySelector('.task2Button');
+        let button3 = document.querySelector('.task3Button');
         buttonOrigin.addEventListener('click', x => { templateElement.innerHTML = template });
         button1.addEventListener('click', makeTask1);
         button2.addEventListener('click', makeTask2);
+        button3.addEventListener('click', makeTask3);
 
         function makeTask1() {
             let test = document.querySelector('.template').innerHTML;
@@ -40,7 +44,17 @@
         function makeTask2() {
             let test = document.querySelector('.template').innerHTML;
             // определяем группы до апострофа и после, потом их восстанавливаем а апостров заменяем
+            // Я не верно решила задачу. я почему то наоборот, решила, заменить апсотрафы внутри
+            // а в задинии заменить все кроме апострафов
             templateElement.innerHTML = test.replace(/(\w)'(\w)/g, '$1"$2');
+        }
+
+        function makeTask3() {
+            let test = document.querySelector('.template').innerHTML;
+            // Я уже подглядела это в след задании, но я поняла, что \B - инверсия от \b - конца слова
+            // конец слова это: \w (буква) вначале, вконце и в середине заканчивается на \w и след не \w
+            // я поняла это решение
+            templateElement.innerHTML = test.replace(/\B'|'\B/g, '"');
         }
 
         const template = `
