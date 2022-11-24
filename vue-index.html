@@ -18,7 +18,9 @@
             </div>
         </div>
 
-        <input v-model="filterText" @change="filter" type="search" class="search">
+        <span>Поиск:</span>
+        <input v-model="filterText" type="search" class="search">
+        <span class="searchIcon" :class="this.filterText? '' : 'searchIconToggle'">&#x1F50E;&#xFE0E;</span>
         <div>{{filterText}}</div>
 
         <div class="content">
@@ -32,7 +34,7 @@
         </div>
 
     </div>
-    <script src="./productClasses.js"></script>
+    <script src="./vue-index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script>
         const RESPONSE_API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
@@ -52,22 +54,13 @@
                 ],
                 products: [
                     // new Product(0, '11111', 43, ''),
-                    // new Product(1, '22222', 43, ''),
+                    // new Product(1, '11222', 43, ''),
                     // new Product(2, '33333', 43, ''),
                     // new Product(3, '44444', 43, ''),
                 ],
-                filteredProducts: []
+                //filteredProducts: []
             },
             methods: {
-
-                filter() {
-                    if (this.filterText) {
-                        filteredProducts = products.filter(
-                            x => x.Title.indexOf(this.filterText) >= 0
-                            //x => /.*ss.*/.test(x.Title)
-                        );
-                    }
-                },
 
                 async initProducts(uri) {
                     this.products = await fetchProducts(uri);
@@ -77,28 +70,64 @@
                     this.basketProducts = await fetchBasketItems(uri);
                 }
             },
-            // computed: {
-            //     filteredProducts: () => {
-            //         return this.basketProducts;//.filter((x) => /.*ss.*/.test(x.Title));
-            //     }
-            // },
+
+            computed: {
+                filteredProducts: function () {
+                    if (!this.filterText) return this.products;
+                    return this.products.filter(
+                        x => {
+                            // здесь каждый раз надо создавать объект регулярного выражения
+                            // понизит ли это эффективность по сравнению с String.indexOf(...)
+                            let reg = new RegExp(`.*${this.filterText}.*`, "g");
+                            return reg.test(x.title);
+                        }
+                        // тоже самое только, без регулярки
+                        //x => x.title.indexOf(this.filterText) >= 0
+                    );
+                }
+            },
 
             async mounted() {
                 this.filterText = "";
                 await this.initProducts(PRODUCT_API);
                 await this.initBasketProducts(BASKET_API);
-                this.filteredProducts = this.products;
+                //this.filteredProducts = this.products;
             }
         });
 
     </script>
 
     <style>
+        *:focus {
+            outline: none;
+        }
+
+        .searchIcon {
+            font-size: 1.5rem;
+            color: rgba(92, 222, 196, 0.929);
+            background-color: white;
+            font-weight: 900;
+            margin: 0 3px;
+        }
+
+        .searchIconToggle {
+            position: relative;
+            left: -40px;
+            animation-duration: 3s;
+            animation-name: ;
+        }
+
         .search {
-            border-radius: 5px;
-            border-color: blanchedalmond;
-            width: 14em;
-            height: 2em;
+            font-weight: 600;
+            color: rgb(61, 88, 84);
+            border-radius: 10px;
+            border-color: rgb(142, 231, 213);
+            border-style: solid;
+            border-width: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 24em;
+            height: 3em;
             font-size: 18px;
         }
 
