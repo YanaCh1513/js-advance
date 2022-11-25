@@ -9,23 +9,58 @@
 </head>
 
 <body>
-    <div class="backet"></div>
-
-    <div class="content"></div>
-
-    <script src="./index.js"></script>
+    <div id="app">
+        <basket></basket>
+        <search></search>
+        <products :filterText="filterText"></products>
+    </div>
+    <script src="./vue-index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="./components.js"></script>
+    <script src="./main.js"></script>
     <script>
 
-    </script>
 
+    </script>
     <style>
+        *:focus {
+            outline: none;
+        }
+
+        .searchIcon {
+            font-size: 1.5rem;
+            color: rgba(92, 222, 196, 0.929);
+            background-color: white;
+            font-weight: 900;
+            margin: 0 3px;
+        }
+
+        .searchIconToggle {
+            position: relative;
+            left: -40px;
+        }
+
+        .search {
+            font-weight: 600;
+            color: rgb(61, 88, 84);
+            border-radius: 10px;
+            border-color: rgb(142, 231, 213);
+            border-style: solid;
+            border-width: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 24em;
+            height: 3em;
+            font-size: 18px;
+        }
+
         .content {
             display: flex;
             padding: 10px;
             flex-wrap: wrap;
         }
 
-        .backet {
+        .basket {
             display: flex;
             background-color: blanchedalmond;
             border-style: dotted;
@@ -33,7 +68,7 @@
             flex-wrap: wrap;
         }
 
-        .backet-item {
+        .basket-item {
             background-color: azure;
             border-style: dotted;
             padding: 5px;
