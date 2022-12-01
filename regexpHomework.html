@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="template"></div>
+    <button class="originButton">Вернуть исходный текст</button>
+    <button class="task1Button">Заменить все кавычки</button>
+    <button class="task2Button">Заменить только апострафы</button>
+    <button class="task3Button">Заменить кроме апострафов</button>
+
+    <style>
+        button {
+            width: 200px;
+            height: 80px;
+        }
+
+        .template {
+            white-space: pre-wrap;
+        }
+    </style>
+    <script>
+        let templateElement = document.querySelector('.template');
+        let buttonOrigin = document.querySelector('.originButton');
+        let button1 = document.querySelector('.task1Button');
+        let button2 = document.querySelector('.task2Button');
+        let button3 = document.querySelector('.task3Button');
+        buttonOrigin.addEventListener('click', x => { templateElement.innerHTML = template });
+        button1.addEventListener('click', makeTask1);
+        button2.addEventListener('click', makeTask2);
+        button3.addEventListener('click', makeTask3);
+
+        function makeTask1() {
+            let test = document.querySelector('.template').innerHTML;
+            templateElement.innerHTML = test.replace(/'/g, '"');
+        }
+
+        function makeTask2() {
+            let test = document.querySelector('.template').innerHTML;
+            // определяем группы до апострофа и после, потом их восстанавливаем а апостров заменяем
+            // Я не верно решила задачу. я почему то наоборот, решила, заменить апсотрафы внутри
+            // а в задинии заменить все кроме апострафов
+            templateElement.innerHTML = test.replace(/(\w)'(\w)/g, '$1"$2');
+        }
+
+        function makeTask3() {
+            let test = document.querySelector('.template').innerHTML;
+            // Я уже подглядела это в след задании, но я поняла, что \B - инверсия от \b - конца слова
+            // конец слова это: \w (буква) вначале, вконце и в середине заканчивается на \w и след не \w
+            // я поняла это решение
+            templateElement.innerHTML = test.replace(/\B'|'\B/g, '"');
+        }
+
+        const template = `
+        One: 'Hi Mary.' Two: 'Oh, hi.'
+        One: 'How are you doing?'
+        Two: 'I'm doing alright. How about you?'
+        One: 'Not too bad. The weather is great isn't it?'
+        Two: 'Yes. It's absolutely beautiful today.'
+        One: 'I wish it was like this more frequently.'
+        Two: 'Me too.'
+        One: 'So where are you going now?'
+        Two: 'I'm going to meet a friend of mine at the department store.'
+        One: 'Going to do a little shopping?'
+        Two: 'Yeah, I have to buy some presents for my parents.'
+        One: 'What's the occasion?'
+        Two: 'It's their anniversary.'
+        One: 'That's great. Well, you better get going. You don't want to be late.'
+        Two: 'I'll see you next time.'
+        One: 'Sure. Bye.'
+        `;
+
+        templateElement.innerHTML = template;
+
+
+        // шпаргалка с лекций
+        // // i - поиск без учета регистра
+        // // g - множественный поиск
+        // // m - многострочный поиск
+        // const str = "Язык JavaScript называется из-за популярности языка Java";
+        // const regExp = new RegExp("java", "ig");
+        // const regExp1 = /java/i; // i проверка на соответстие // true|false
+
+        // console.log(str.search(/java/i)); // индекс вхождения похожа
+        // console.log(str.match(/java/ig)); // вынимает то что показывает
+
+        // // замена строк
+        // console.log('+7(000)000-00-00'.replace(/-/g, ':')); // +7(000)000:00:00
+
+        // class Card {
+        //     filter(value) {
+        //         const regexp = new RegExp(value, 'i');
+        //         this.filtered = this.allProducts.filter(product => regExp.test(product.product_name));
+        //     }
+        // }
+
+
+    </script>
+</body>
+
+</html>
