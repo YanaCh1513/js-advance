@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app" class="alex">
+
+        <div class="basket">
+            <h3>Корзина</h3>
+            <div class="basket-item" v-for="basketProduct in basketProducts" :key="basketProduct.id">
+                title: {{basketProduct.title}}, price: {{basketProduct.price}}, quantity: {{basketProduct.quantity}}
+            </div>
+        </div>
+
+        <span>Поиск:</span>
+        <input v-model="filterText" type="search" class="search">
+        <span class="searchIcon" :class="this.filterText? '' : 'searchIconToggle'">&#x1F50E;&#xFE0E;</span>
+        <div>{{filterText}}</div>
+
+        <div class="content">
+            <div class="card" v-for="product in filteredProducts" :key="product.id" :data-id="product.id"
+                :data-title="product.title" :data-price="product.price">
+                <img :src="product.img" alt="picture">
+                <h3>{{product.title}}</h3>
+                <p>{{product.price}}</p>
+                <button>Buy</button>
+            </div>
+        </div>
+
+    </div>
+    <script src="./vue-index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script>
+        const RESPONSE_API = 'https://raw.githubusercontent.com/GeekBrainsTutorial/online-store-api/master/responses';
+        // не пишем во вью чтобы эти поля не были реактивными, кажется это сэкономит ресурсы.
+        const PRODUCT_API = `${RESPONSE_API}/catalogData.json`;
+
+        const BASKET_API = `${RESPONSE_API}/getBasket.json`;
+
+        var app = new Vue({
+            el: ".alex",
+            data: {
+                filterText: "",
+                basketProducts: [
+                    // new BasketProduct(0, 'sssss', 54, 1),
+                    // new BasketProduct(1, 'aaaaa', 54, 1),
+                    // new BasketProduct(2, 'bbbbbb', 54, 1),
+                ],
+                products: [
+                    // new Product(0, '11111', 43, ''),
+                    // new Product(1, '11222', 43, ''),
+                    // new Product(2, '33333', 43, ''),
+                    // new Product(3, '44444', 43, ''),
+                ],
+                //filteredProducts: []
+            },
+            methods: {
+
+                async initProducts(uri) {
+                    this.products = await fetchProducts(uri);
+                },
+
+                async initBasketProducts(uri) {
+                    this.basketProducts = await fetchBasketItems(uri);
+                }
+            },
+
+            computed: {
+                filteredProducts: function () {
+                    if (!this.filterText) return this.products;
+                    return this.products.filter(
+                        x => {
+                            // здесь каждый раз надо создавать объект регулярного выражения
+                            // понизит ли это эффективность по сравнению с String.indexOf(...)
+                            let reg = new RegExp(`.*${this.filterText}.*`, "g");
+                            return reg.test(x.title);
+                        }
+                        // тоже самое только, без регулярки
+                        //x => x.title.indexOf(this.filterText) >= 0
+                    );
+                }
+            },
+
+            async mounted() {
+                this.filterText = "";
+                await this.initProducts(PRODUCT_API);
+                await this.initBasketProducts(BASKET_API);
+                //this.filteredProducts = this.products;
+            }
+        });
+
+    </script>
+
+    <style>
+        *:focus {
+            outline: none;
+        }
+
+        .searchIcon {
+            font-size: 1.5rem;
+            color: rgba(92, 222, 196, 0.929);
+            background-color: white;
+            font-weight: 900;
+            margin: 0 3px;
+        }
+
+        .searchIconToggle {
+            position: relative;
+            left: -40px;
+        }
+
+        .search {
+            font-weight: 600;
+            color: rgb(61, 88, 84);
+            border-radius: 10px;
+            border-color: rgb(142, 231, 213);
+            border-style: solid;
+            border-width: 5px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 24em;
+            height: 3em;
+            font-size: 18px;
+        }
+
+        .content {
+            display: flex;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .basket {
+            display: flex;
+            background-color: blanchedalmond;
+            border-style: dotted;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        .basket-item {
+            background-color: azure;
+            border-style: dotted;
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 200px;
+            /* height: 200px; */
+            background-color: rgb(129, 181, 181);
+            cursor: pointer;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 10px;
+            padding: 10px;
+
+        }
+
+        .card button {
+            width: 100%;
+            height: 40px;
+        }
+
+        img {
+            /* border: solid; */
+            border-radius: 10px;
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+        }
+    </style>
+</body>
+
+</html>
